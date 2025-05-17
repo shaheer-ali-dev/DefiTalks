@@ -44,7 +44,8 @@ module.exports = (bot, msg) => {
   faqMessage += '• Active stakes  \n';
 
   faqMessage += '💵 *Which stablecoins are supported?*  \n';
-  faqMessage += '→ Solana tokens can be deposit for now.\n';
+  faqMessage += '→ Solana can be deposit for now.\n';
+  faqMessage += '→ deposits/withdrawals of other stable coins will be added soon!\n';
   faqMessage += 'You can deposits/withdrawals Solana to other wallets.\n\n';
 
   faqMessage += '📈 *How accurate is token pricing?*  \n';
