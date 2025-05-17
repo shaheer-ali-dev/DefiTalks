@@ -141,7 +141,14 @@ Try saying:
 ## 🛠️ How to Run DeFiTalk Locally
 git clone https://github.com/shaheer-ali-dev/DefiTalks
 cd DefiTalks
-Set up environment variables(use your own keys)
+Set up environment variables(use your own keys)like below :
+BOT_TOKEN=
+AI_API_KEY=
+AI_API_URL=
+RPC_URL=
+BIRD_AUTH_TOKEN=
+MONGODB_URI=
+ENCRYPTION_KEY=
 npm run start(for production) OR npm run dev(for development)
 
 ## 💬 Contact
