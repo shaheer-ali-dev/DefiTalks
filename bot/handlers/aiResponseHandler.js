@@ -50,7 +50,7 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
             let lastKnownBalance = [];
             switch (category) {
                 case 'swap': {
-                    let resultBoth ;
+                    let resultBoth;
                     resultBoth = await getMintAddress(defi_action.from_token, defi_action.from_name);
                     const from_token = resultBoth.mintAddress
                     const decimal = resultBoth.decimal
@@ -101,9 +101,9 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
 
                     for (const wallet of wallets) {
                         try {
-                            const balance = await getTokenBalance(wallet.publicKey,from_token);
+                            const balance = await getTokenBalance(wallet.publicKey, from_token);
                             const normalizedBalance = balance / (10 ** decimal); // Convert smallest unit to normal unit
-                        lastKnownBalance.push({ publicKey: wallet.publicKey, normalizedBalance });
+                            lastKnownBalance.push({ publicKey: wallet.publicKey, normalizedBalance });
 
                             if (balance < defi_action.amount) {
                                 // Skip this wallet if balance is insufficient
@@ -121,12 +121,12 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
 
                                     if (match) {
 
-                                        ({ success, txid} = await swapTokens({
+                                        ({ success, txid } = await swapTokens({
                                             fromMint: from_token,
                                             toMint: to_token,
                                             amount: defi_action.amount,
                                             walletPrivateKeyBase58: wallet.privateKey,
-                                            decimal : decimal
+                                            decimal: decimal
                                         }));
 
                                     }
@@ -136,12 +136,12 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
                                 }
                             } else {
                                 if (balance >= defi_action.amount) {
-                                    ({ success, txid} = await swapTokens({
+                                    ({ success, txid } = await swapTokens({
                                         fromMint: from_token,
                                         toMint: to_token,
                                         amount: defi_action.amount,
                                         walletPrivateKeyBase58: wallet.privateKey,
-                                        decimal : decimal
+                                        decimal: decimal
                                     }));
                                 }
                             }
@@ -151,16 +151,16 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
                                     `✅ Successfully swapped *${defi_action.amount} ${defi_action.from_token} ➔ ${defi_action.to_token}* in wallet \`${usedWallet}\`.\n🧾 *Transaction ID:* \`${txid}\``);
 
                                 if (isSelling) {
-                                    const balance_ = await getTokenBalance(wallet.publicKey,from_token);
-                                    if( balance_ <= 0.001 ){
-const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
-                                    const res = wasDeleted ? '✔️ Swap record deleted.' : 'ℹ️ No matching swap record found to delete.'
+                                    const balance_ = await getTokenBalance(wallet.publicKey, from_token);
+                                    if (balance_ <= 0.001) {
+                                        const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
+                                        const res = wasDeleted ? '✔️ Swap record deleted.' : 'ℹ️ No matching swap record found to delete.'
                                     }
-                                    
+
                                 } else {
                                     try {
                                         const price = await fetchTokenPrice(to_token);
-                                        const success = await addSwapForUser(userId, wallet.publicKey,to_token, defi_action.to_token, String(price));
+                                        const success = await addSwapForUser(userId, wallet.publicKey, to_token, defi_action.to_token, String(price));
                                     } catch (err) {
                                         console.error('❌ Error saving swap info:', err);
                                         await sendHumanizedMessage(bot, chatId, `ℹ️ Swap was successful, but we couldn’t save your swap data. Please note it manually.`);
@@ -196,7 +196,7 @@ const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
                     break;
                 }
 
-                
+
                 case 'portfolio':
                     let portfolio_message_2 = `📊 *Your Portfolio Summary* 📊\n\n`;
                     const portfolioMessage = getRandomHumanResponse('portfolio', {
@@ -204,11 +204,11 @@ const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
                     });
                     await sendHumanizedMessage(bot, chatId, portfolioMessage);
                     let stakes
-                                        const swapsData = await getSwapByUserId(userId);
-                    try{
+                    const swapsData = await getSwapByUserId(userId);
+                    try {
 
-                   stakes = await getStakeByUserId(userId);
-                    }catch(e){
+                        stakes = await getStakeByUserId(userId);
+                    } catch (e) {
                         console.log(e)
                     }
                     if (defi_action.wallet_address === 'all') {
@@ -233,10 +233,10 @@ const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
                                 const profitLossPercent = ((profitLoss / boughtPrice) * 100).toFixed(2);
                                 const direction = profitLoss >= 0 ? '📈' : '📉';
                                 const formattedPL = profitLoss.toFixed(3);
-                                const amount = getTokenBalance(swap.publicKey , swap.tokenMintAddress)
+                                const amount = getTokenBalance(swap.publicKey, swap.tokenMintAddress)
                                 portfolio_message_2 +=
                                     `   🔹 *${swap.symbol}*\n` +
-                                    `   🔹 *Amount:* \`${amount}\`\n`+
+                                    `   🔹 *Amount:* \`${amount}\`\n` +
                                     `   🔸 *Mint:* \`${swap.tokenMintAddress}\`\n` +
                                     `   💸 Bought at: $${boughtPrice}\n` +
                                     `   🟢 Current: $${currentPrice}\n` +
@@ -266,11 +266,11 @@ const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
                                 const profitLossPercent = ((profitLoss / boughtPrice) * 100).toFixed(2);
                                 const direction = profitLoss >= 0 ? '📈' : '📉';
                                 const formattedPL = profitLoss.toFixed(3);
-                                const amount = getTokenBalance(swap.publicKey , swap.tokenMintAddress)
+                                const amount = getTokenBalance(swap.publicKey, swap.tokenMintAddress)
 
                                 portfolio_message_2 +=
                                     `   🔹 *${swap.symbol}*\n` +
-                                    `   🔹 *Amount:* \`${amount}\`\n`+
+                                    `   🔹 *Amount:* \`${amount}\`\n` +
                                     `   🔸 *Mint:* \`${swap.tokenMintAddress}\`\n` +
                                     `   💸 Bought at: $${boughtPrice}\n` +
                                     `   🟢 Current: $${currentPrice}\n` +
@@ -278,7 +278,7 @@ const wasDeleted = await deleteSwapByUserId(userId, defi_action.from_token);
                             }
                         }
                     }
-await sendHumanizedMessage(bot,chatId , portfolio_message_2)
+                    await sendHumanizedMessage(bot, chatId, portfolio_message_2)
                     break;
 
 
@@ -300,71 +300,71 @@ await sendHumanizedMessage(bot,chatId , portfolio_message_2)
 
 
                 case 'staking':
-    if (wallets == null || wallets.length === 0) {
-        const wallet = generateWallet();
-        const message = `
+                    if (wallets == null || wallets.length === 0) {
+                        const wallet = generateWallet();
+                        const message = `
         ⚠️ You don’t have a wallet yet — I’ve just generated one for you 🔐`+
-            `✅ *New Wallet Created!* ✅\n\n` +
-            `🔹 *Public Key:* \`${wallet.publicKey}\`\n\n` +
-            `🔹 *Private Key:* \`${wallet.privateKey}\`\n\n` +
-            `📥 Send SOL to your wallet using Phantom, Binance, or any Solana wallet.\n\n`;
-        const result = await addWalletForUser(userId, wallet.publicKey, wallet.privateKey);
+                            `✅ *New Wallet Created!* ✅\n\n` +
+                            `🔹 *Public Key:* \`${wallet.publicKey}\`\n\n` +
+                            `🔹 *Private Key:* \`${wallet.privateKey}\`\n\n` +
+                            `📥 Send SOL to your wallet using Phantom, Binance, or any Solana wallet.\n\n`;
+                        const result = await addWalletForUser(userId, wallet.publicKey, wallet.privateKey);
 
-        await sendHumanizedMessage(bot, chatId, message);
-        return;
-    }
-
-    const symbol = defi_action.symbol;
-    let Executed = false;
-    let lastKnownBalance = [];
-
-    if (['sol', 'SOL', 'solana', 'SOLANA'].includes(symbol)) {
-        for (const wallet of wallets) {
-            try {
-                const balance = await getWalletBalance(wallet.publicKey);
-                lastKnownBalance.push({ publicKey: wallet.publicKey, balance });
-
-                if (balance >= defi_action.amount) {
-                    const result = await stakeSOL({
-                        privateKey: wallet.privateKey,
-                        amount: defi_action.amount
-                    });
-
-                    if (result.success) {
-                        await sendHumanizedMessage(bot, chatId,
-                            `✅ Staking of *${defi_action.amount} SOL* was successful in wallet \`${result.stakeAccount}\``);
-                        try {
-    const res = await addStakeForUser(userId, wallet.publicKey, wallet.privateKey, result.stakeAccount, 'SOL', String(defi_action.amount));
-} catch (err) {
-    console.error('❌ Error while saving stake to DB:', err);
-}
-
-                        Executed = true;
+                        await sendHumanizedMessage(bot, chatId, message);
                         return;
-                    } else if(!result.success) {
-                        await sendHumanizedMessage(bot, chatId,
-                            `❌ Staking failed for wallet \`${wallet.publicKey}\`.`);
                     }
-                }
-            } catch (err) {
-                //skip
-            }
-        }
 
-        if (!Executed) {
-            let balanceReport = lastKnownBalance.map(({ publicKey, balance }) =>
-                `• \`${publicKey}\`: *${balance.toFixed(4)} SOL*`
-            ).join('\n');
+                    const symbol = defi_action.symbol;
+                    let Executed = false;
+                    let lastKnownBalance = [];
 
-            await sendHumanizedMessage(bot, chatId,
-                `⚠️ *Staking couldn't be done.* None of your connected wallets have enough SOL for this operation (*${defi_action.amount} SOL* needed).\n\n` +
-                `📊 *Wallet Balances:*\n${balanceReport}\n\n` +
-                `💡 Please deposit at least *${defi_action.amount} SOL* into any of the above wallets and try again.`);
-        }
-    }
-    break;
+                    if (['sol', 'SOL', 'solana', 'SOLANA'].includes(symbol)) {
+                        for (const wallet of wallets) {
+                            try {
+                                const balance = await getWalletBalance(wallet.publicKey);
+                                lastKnownBalance.push({ publicKey: wallet.publicKey, balance });
 
-                 case 'defi news':
+                                if (balance >= defi_action.amount) {
+                                    const result = await stakeSOL({
+                                        privateKey: wallet.privateKey,
+                                        amount: defi_action.amount
+                                    });
+
+                                    if (result.success) {
+                                        await sendHumanizedMessage(bot, chatId,
+                                            `✅ Staking of *${defi_action.amount} SOL* was successful in wallet \`${result.stakeAccount}\``);
+                                        try {
+                                            const res = await addStakeForUser(userId, wallet.publicKey, wallet.privateKey, result.stakeAccount, 'SOL', String(defi_action.amount));
+                                        } catch (err) {
+                                            console.error('❌ Error while saving stake to DB:', err);
+                                        }
+
+                                        Executed = true;
+                                        return;
+                                    } else if (!result.success) {
+                                        await sendHumanizedMessage(bot, chatId,
+                                            `❌ Staking failed for wallet \`${wallet.publicKey}\`.`);
+                                    }
+                                }
+                            } catch (err) {
+                                //skip
+                            }
+                        }
+
+                        if (!Executed) {
+                            let balanceReport = lastKnownBalance.map(({ publicKey, balance }) =>
+                                `• \`${publicKey}\`: *${balance.toFixed(4)} SOL*`
+                            ).join('\n');
+
+                            await sendHumanizedMessage(bot, chatId,
+                                `⚠️ *Staking couldn't be done.* None of your connected wallets have enough SOL for this operation (*${defi_action.amount} SOL* needed).\n\n` +
+                                `📊 *Wallet Balances:*\n${balanceReport}\n\n` +
+                                `💡 Please deposit at least *${defi_action.amount} SOL* into any of the above wallets and try again.`);
+                        }
+                    }
+                    break;
+
+                case 'defi news':
                     const newsMessage = getRandomHumanResponse('defi_news', {});
                     await sendHumanizedMessage(bot, chatId, newsMessage);
                     const newsData = await fetchDefiNews(5);
@@ -372,14 +372,14 @@ await sendHumanizedMessage(bot,chatId , portfolio_message_2)
                     await sendHumanizedMessage(bot, chatId, summarizedNews)
                     break;
                 case 'deposit wallet':
-                {
-                    const { tokenMintAddress, decimal } = getMintAddress(defi_action.symbol, defi_action.name);
+                    {
+                        const { tokenMintAddress, decimal } = getMintAddress(defi_action.symbol, defi_action.name);
 
-                    if (!wallets || wallets.length === 0) {
-                        try {
-                            const wallet = generateWallet();
-                            await addWalletForUser(userId, wallet.publicKey, wallet.privateKey);
-                            const message = `
+                        if (!wallets || wallets.length === 0) {
+                            try {
+                                const wallet = generateWallet();
+                                await addWalletForUser(userId, wallet.publicKey, wallet.privateKey);
+                                const message = `
 ⚠️ You don’t have a wallet yet — I’ve just generated one for you 🔐
 ✅ *New Wallet Created!* ✅
 
@@ -388,97 +388,85 @@ await sendHumanizedMessage(bot,chatId , portfolio_message_2)
 
 📥 Send SOL to your wallet using Phantom, Binance, or any Solana wallet.
 `;
-                            await sendHumanizedMessage(bot, chatId, message);
-                        } catch (err) {
-                            console.error('❌ Error creating wallet:', err);
-                            await sendHumanizedMessage(bot, chatId, `⚠️ Failed to generate or save your wallet. Please try again later.`);
-                        }
-                        return;
-                    }
-
-                    let executed = false;
-                    const lastKnownBalance = [];
-                    const failedWallets = [];
-
-                    let swapData = [];
-                    try {
-                        swapData = await getSwapByUserId(userId);
-                    } catch (err) {
-                        console.error('❌ Error fetching swap data:', err);
-                    }
-
-                    for (const wallet of wallets) {
-                        try {
-                            const balance = await getWalletBalance(wallet.publicKey);
-                            lastKnownBalance.push({ publicKey: wallet.publicKey, balance });
-
-                            if (balance < defi_action.amount) {
-                                failedWallets.push({ publicKey: wallet.publicKey, balance });
-                                continue;
+                                await sendHumanizedMessage(bot, chatId, message);
+                            } catch (err) {
+                                console.error('❌ Error creating wallet:', err);
+                                await sendHumanizedMessage(bot, chatId, `⚠️ Failed to generate or save your wallet. Please try again later.`);
                             }
+                            return;
+                        }
 
-                            const isSolTransfer = ['sol', 'solana', 'SOL', 'SOLANA'].includes(defi_action.symbol);
-                            let success = false;
-                            let txid = null;
+                        let executed = false;
+                        const lastKnownBalance = [];
+                        const failedWallets = [];
 
-                            if (isSolTransfer) {
-                                ({ success, txid } = await transferToken(
-                                    wallet.privateKey,
-                                    defi_action.wallet,
-                                    'SOL',
-                                    tokenMintAddress,
-                                    decimal,
-                                    defi_action.amount
-                                ));
-                            } else {
-                                const matchingSwap = swapData.find(
-                                    swap =>
-                                        swap.tokenMintAddress === tokenMintAddress ||
-                                        swap.symbol.toLowerCase() === defi_action.symbol.toLowerCase()
-                                );
+                        let swapData = [];
+                        try {
+                            swapData = await getSwapByUserId(userId);
+                        } catch (err) {
+                            console.error('❌ Error fetching swap data:', err);
+                        }
 
-                                if (!matchingSwap) {
-                                    await sendHumanizedMessage(bot, chatId, `❌ You don't have the required token in your wallets.`);
+                        for (const wallet of wallets) {
+                            try {
+                                const balance = await getTokenBalance(wallet.publicKey , tokenMintAddress);
+                                lastKnownBalance.push({ publicKey: wallet.publicKey, balance });
+
+                                if (balance < defi_action.amount) {
+                                    failedWallets.push({ publicKey: wallet.publicKey, balance });
                                     continue;
                                 }
 
-                                ({ success, txid } = await transferToken(
-                                    wallet.privateKey,
-                                    defi_action.wallet,
-                                    defi_action.symbol,
-                                    tokenMintAddress,
-                                    decimal,
-                                    defi_action.amount
-                                ));
+                                const isSolTransfer = ['sol', 'solana', 'SOL', 'SOLANA'].includes(defi_action.symbol);
+                                let success = false;
+                                let txid = null;
+
+                                if (isSolTransfer) {
+                                    ({ success, txid } = await transferToken({ fromPrivateKeyBase58: wallet.privateKey, toWalletAddress: defi_action.wallet, symbol: 'SOL', mintAddress: tokenMintAddress, decimals: decimal, amount: defi_action.amount }
+
+                                    ));
+                                } else {
+                                    const matchingSwap = swapData.find(
+                                        swap =>
+                                            swap.tokenMintAddress === tokenMintAddress ||
+                                            swap.symbol.toLowerCase() === defi_action.symbol.toLowerCase()
+                                    );
+
+                                    if (!matchingSwap) {
+                                        await sendHumanizedMessage(bot, chatId, `❌ You don't have the required token in your wallets.`);
+                                        continue;
+                                    }
+
+                                    ({ success, txid } = await transferToken({ fromPrivateKeyBase58: wallet.privateKey, toWalletAddress: defi_action.wallet, symbol: defi_action.symbol, mintAddress: tokenMintAddress, decimals: decimal, amount: defi_action.amount }))
+                                }
+                            
+                                if (success) {
+                                    executed = true;
+                                    await sendHumanizedMessage(bot, chatId,
+                                        `✅ Successfully Transferred from \`${wallet.publicKey}\` ➔ \`${defi_action.wallet}\`.\n🆔 Transaction ID: \`${txid}\``);
+                                    break; // Stop after successful swap
+                                }
+
+                            } catch (err) {
+                                console.error(`❌ Error during swap for wallet ${wallet.publicKey}:`, err);
+                                failedWallets.push({ publicKey: wallet.publicKey, balance: 0 });
+
                             }
-
-                            if (success) {
-                                executed = true;
-                                await sendHumanizedMessage(bot, chatId,
-                                    `✅ Successfully Transferred from \`${wallet.publicKey}\` ➔ \`${defi_action.wallet}\`.\n🆔 Transaction ID: \`${txid}\``);
-                                break; // Stop after successful swap
-                            }
-
-                        } catch (err) {
-                            console.error(`❌ Error during swap for wallet ${wallet.publicKey}:`, err);
-                            failedWallets.push({ publicKey: wallet.publicKey, balance: 0 });
-
                         }
+
+                        if (!executed) {
+                            const balanceReport = lastKnownBalance.map(({ publicKey, balance }) =>
+                                `• \`${publicKey}\`: *${balance.toFixed(4)} SOL*`
+                            ).join('\n');
+
+                            await sendHumanizedMessage(bot, chatId,
+                                `🚫 *Transfer of tokens could not be executed.*\nNone of your wallets have enough balance or the required tokens.\n\n` +
+                                `📊 *Wallet Balances:*\n${balanceReport}\n\n` +
+                                `💡 Please deposit the required amount and try again.`);
+                        }
+
+                        break;
                     }
-
-                    if (!executed) {
-                        const balanceReport = lastKnownBalance.map(({ publicKey, balance }) =>
-                            `• \`${publicKey}\`: *${balance.toFixed(4)} SOL*`
-                        ).join('\n');
-
-                        await sendHumanizedMessage(bot, chatId,
-                            `🚫 *Transfer of tokens could not be executed.*\nNone of your wallets have enough balance or the required tokens.\n\n` +
-                            `📊 *Wallet Balances:*\n${balanceReport}\n\n` +
-                            `💡 Please deposit the required amount and try again.`);
-                    }
-
-                    break;
-                }
 
                 case 'balance check':
                     let finalMessage = "";
