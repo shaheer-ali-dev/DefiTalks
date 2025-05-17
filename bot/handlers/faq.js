@@ -44,8 +44,8 @@ module.exports = (bot, msg) => {
   faqMessage += '• Active stakes  \n';
 
   faqMessage += '💵 *Which stablecoins are supported?*  \n';
-  faqMessage += '→ Almost all tokens can be deposit.\n';
-  faqMessage += 'You can deposits/withdrawals stablecoin to other wallets.\n\n';
+  faqMessage += '→ Solana tokens can be deposit for now.\n';
+  faqMessage += 'You can deposits/withdrawals Solana to other wallets.\n\n';
 
   faqMessage += '📈 *How accurate is token pricing?*  \n';
   faqMessage += '→ Token prices are pulled live from Solana DEXs like Orca, Raydium, and BirdEye API.  \n';
