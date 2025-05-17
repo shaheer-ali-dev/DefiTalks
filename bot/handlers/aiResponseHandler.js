@@ -371,7 +371,7 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
                     const summarizedNews = await summarizeNews(newsData);
                     await sendHumanizedMessage(bot, chatId, summarizedNews)
                     break;
-                case 'deposit wallet':
+               case 'deposit wallet':
                     {
                         const { tokenMintAddress, decimal } = getMintAddress(defi_action.symbol, defi_action.name);
 
@@ -409,7 +409,7 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
 
                         for (const wallet of wallets) {
                             try {
-                                const balance = await getTokenBalance(wallet.publicKey , tokenMintAddress);
+                                const balance = await getWalletBalance(wallet.publicKey);
                                 lastKnownBalance.push({ publicKey: wallet.publicKey, balance });
 
                                 if (balance < defi_action.amount) {
@@ -426,18 +426,8 @@ async function handleAIResponse(bot, userId, chatId, aiRawResponse) {
 
                                     ));
                                 } else {
-                                    const matchingSwap = swapData.find(
-                                        swap =>
-                                            swap.tokenMintAddress === tokenMintAddress ||
-                                            swap.symbol.toLowerCase() === defi_action.symbol.toLowerCase()
-                                    );
-
-                                    if (!matchingSwap) {
-                                        await sendHumanizedMessage(bot, chatId, `❌ You don't have the required token in your wallets.`);
-                                        continue;
-                                    }
-
-                                    ({ success, txid } = await transferToken({ fromPrivateKeyBase58: wallet.privateKey, toWalletAddress: defi_action.wallet, symbol: defi_action.symbol, mintAddress: tokenMintAddress, decimals: decimal, amount: defi_action.amount }))
+                                    await sendHumanizedMessage(bot,chatId , `Sorry only Solana can be deposit and withdraw. Other token deposits are coming soon!`);
+                                    break;
                                 }
                             
                                 if (success) {
