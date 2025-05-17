@@ -25,8 +25,9 @@ module.exports = (bot, msg) => {
   helpMessage += 'Unstaking is temporarily disabled duo to epoch timing logic. Coming Soon'
   helpMessage += '→ Example: _“Stake 1 SOL”_\n\n';
 
-  helpMessage += '💵 *Stablecoin Actions*\n';
-  helpMessage += '→ deposits/withdrawals of stablecoins like SOL\n';
+  helpMessage += '💵 *withdrawal Actions*\n';
+  helpMessage += '→ deposits/withdrawals of SOL\n';
+  helpMessage += '→ deposits/withdrawals of other stable coins will be added soon!\n';
   helpMessage += '→ Example: _“Deposit 1 SOL to XYZ wallet”_\n\n';
 
   helpMessage += '📈 *Token Price Checker*\n';
