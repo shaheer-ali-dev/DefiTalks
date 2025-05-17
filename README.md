@@ -112,7 +112,7 @@ User: "Can you stake 3 SOL for me?" Bot: [stakes SOL via smart contract]
 
 ## 📽️ Demo Pitch
 
-- Youtube Video:  
+- Youtube Video: https://www.youtube.com/watch?v=55U1oi25NY8
 
 ---
 
