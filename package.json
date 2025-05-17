@@ -1,0 +1,26 @@
+{
+  "name": "defitalks-telegram-bot",
+  "version": "1.0.0",
+  "description": "DeFiTalk — Your personal DeFi assistant on Telegram.",
+  "main": "bot/main.js",
+  "scripts": {
+    "start": "node bot/main.js",
+    "dev": "nodemon bot/main.js"
+  },
+  "author": "Shaheer Ali",
+  "license": "MIT",
+  "dependencies": {
+    "@api/birdeyedotso": "file:.api/apis/birdeyedotso",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.2",
+    "axios": "^1.9.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.5.0",
+    "mongoose": "^8.14.2",
+    "node-telegram-bot-api": "^0.66.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
