@@ -1,162 +1,122 @@
-# 🤖 DeFiTalk – Your AI-Powered DeFi Assistant on Telegram
+# DeFiTalks
 
-Welcome to DeFiTalk – a fully conversational, AI-native DeFi bot that brings powerful on-chain functionality directly into Telegram.  
-Swap tokens, stake SOL, analyze portfolios, get market insights – all through natural language.  
-No clunky UIs. No steep learning curve. Just chat and DeFi.
+**A Telegram-based experiment exploring AI-assisted interaction with decentralized finance.**
 
----
+DeFiTalks is a personal project built to explore how natural-language processing could be used to interpret user messages and translate them into structured DeFi-related actions.
 
-## 🚀 Built for the Solana Hackathon – Solo Project
+The idea was simple: instead of navigating multiple interfaces, users could interact with a Telegram bot using conversational commands.
 
-- 💻 Developer: Shaheer (solo)
-- ⏱️ Timeline: Built in 14 days
-- 💬 Powered by OpenAI NLP + real Solana transactions
-- 🧠 Designed to simplify DeFi for the next billion users
+The project combines a Telegram bot, an AI-powered message parser and integrations with the Solana ecosystem.
 
----
+## How It Works
 
-## 🎯 Features
+The application follows a relatively straightforward flow:
 
-| Category            | Description |
-|---------------------|-------------|
-| 🔄 Swap          | Instantly swap SPL tokens via conversational command |
-| 🧠 AI-Powered UX | Built-in NLP understands human language like “Swap 2 SOL to USDC” |
-| 🪙 Staking       | Stake SOL to top validators with smart delegation |
-| 🧾 Portfolio View| View P&L for all wallets and tokens, including staked SOL |
-| 💼 Wallet Manager| Auto-generates secure wallets; manage multiple accounts |
-| 📈 Token Prices  | Real-time price fetch from DEX Screener, CoinGecko, Raydium |
-| 🔥 Trending Tokens| Get top hot tokens from BirdEye API |
-| 📰 DeFi News     | AI summarizes live DeFi news for you |
-| 💵 Stablecoin Actions| Track stablecoin deposits/withdrawals |
-| 🔐 Encrypted Private Key Storage | Your private key is encrypted securely and never shared |
+```text
+Telegram Message
+       |
+       v
+   Telegram Bot
+       |
+       v
+   AI Parser
+       |
+       v
+ Structured Response
+       |
+       v
+  Action Handler
+       |
+       v
+ Response to User
+```
 
----
+The AI component interprets incoming messages and attempts to classify them into predefined categories. The bot then processes the resulting response through its handlers.
 
-## 🔐 Security & Encryption
+## Features Explored
 
-DeFiTalk prioritizes user safety with:
+The implementation explores several DeFi-related operations:
 
-- 🔐 AES-256 encryption of private keys
-- 🧠 Encrypted secrets stored securely in MongoDB
-- ✅ Wallet access only during active operations
-- ❌ No seed phrases are ever stored or exposed
-- 🔐 IP-restricted MongoDB Atlas deployment
+- Natural-language message classification.
+- Telegram bot commands and message handling.
+- Structured JSON responses from an AI service.
+- Solana and SPL Token integrations.
+- Wallet-related operations.
+- Token information and price-related integrations.
+- Database connectivity through MongoDB.
+- Separate handlers for different bot commands.
 
-> Users control their wallets. DeFiTalk ensures secure automation without compromising privacy.
+These represent areas explored in the codebase, not a guarantee that every operation works end-to-end.
 
----
+## Tech Stack
 
-## 🧠 NLP & AI Engine
+| Component | Technology |
+|---|---|
+| Runtime | Node.js |
+| Language | JavaScript |
+| Bot Framework | node-telegram-bot-api |
+| AI Integration | OpenAI-compatible API |
+| Blockchain | Solana |
+| Token Integration | SPL Token |
+| Database | MongoDB |
+| ODM | Mongoose |
+| HTTP Requests | Axios |
 
-DeFiTalk uses AI to understand casual language and route it to DeFi actions:
+## Project Structure
 
-User: "Can you stake 3 SOL for me?" Bot: [stakes SOL via smart contract]
+```text
+DefiTalks/
+│
+├── Artificial_Intelligence/
+│   └── AI message parser
+│
+├── bot/
+│   ├── handlers/
+│   ├── utils/
+│   └── main.js
+│
+├── config/
+│   └── env.js
+│
+├── database/
+│   └── Database connection
+│
+├── defi/
+│   └── DeFi-related modules
+│
+├── package.json
+├── package-lock.json
+└── README.md
+```
 
-- 🤖 NLP Model: gpt-4-0-mini via [AIMLAPI.com](https://aimlapi.com)  
-- ⏳ Free version with 10 requests/hour  
-- 🧠 Prompts are structured to return clean JSON for DeFi parsing
+## Development Status
 
----
+DeFiTalks was developed as an experimental project to explore the intersection of conversational AI, Telegram bots and blockchain applications.
 
-## 🔧 Powered By
+Development is currently inactive. Although the repository contains implementations and integrations for several components, the overall application has not been established as a fully tested or production-ready service.
 
-| Service | Purpose |
-|--------|---------|
-| 🔗 Helius RPC | Fast, scalable RPC provider for Solana |
-| 🤖 AIMLAPI.com (ChatGPT API) | NLP intelligence (free tier: 10/hr) |
-| 📊 BirdEye API | Price of tokens |
-| 💡 DEX Screener, CoinGecko, Raydium APIs | Live price feeds |
+Some functionality remains incomplete or requires further validation.
 
----
+**This project should be treated as an experimental codebase, not a live financial application. Do not use it to manage real funds or sensitive wallet credentials.**
 
-## 🛑 What’s Not Yet Implemented (Intentionally Skipped)
+## What I Learned
 
-| Feature | Status | Reason |
-|--------|--------|--------|
-| 💧 Liquidity Add/Remove | ❌ Skipped | Requires user LP token mgmt and risk of poor UX without visuals |
-| 🔓 Unstaking | ❌ Deferred | Requires epoch logic + validator cooldown handling |
-| 🪙 RAY/ORCA Staking | ❌ Planned | Requires program-specific contract integration |
+Working on DeFiTalks gave me an opportunity to explore:
 
-> These features are fully scoped and will be implemented post-hackathon to maintain code quality.
+- Integrating external AI APIs into backend applications.
+- Processing natural-language input into structured data.
+- Building Telegram bots with command handlers.
+- Working with blockchain-related libraries.
+- Connecting backend services to MongoDB.
+- Organising a modular Node.js application.
 
----
-
-## 🛠️ How It Works (Architecture Summary)
-
-1. Telegram user sends message like: swap 2 SOL to USDC
-2. Message is passed to NLP layer (AIMLAPI → GPT-4 mini)
-3. AI responds with structured JSON(EXAMPLE):
-   ```json
-   {
-     "category": "Swap",
-     "amount": 2,
-     "from_token": "SOL",
-     "to_token": "USDC"
-   }
-   ```
-4. DeFiTalk interprets the command and executes via Helius RPC and on-chain SDKs
-5. Humanized response returned to the user (with emoji, markdown, and realism)
-
----
-
-## 📡 Future Roadmap
-
-- 🌉 Cross-chain support (EVM, Cosmos, etc)
-- 📱 Mobile Web UI (React + WalletKit)
-- 🧠 GPT-4-Vision integration for chart/graph analysis
-- 🪙 Protocol-specific staking (RAY, ORCA, JITO, etc.)
-- 🔄 Unstaking & Validator Management UI
-- 📊 Admin Dashboard & Usage Analytics
-
----
-
-## 📽️ Demo Pitch
-
-- Youtube Video: https://www.youtube.com/watch?v=55U1oi25NY8
+The project was an interesting exercise in bringing multiple technologies together into one application.
 
 ---
 
-## 🙌 Special Thanks
+**Author:** [Shaheer Ali](https://github.com/shaheer-ali-dev)
 
-- Solana Foundation for the hackathon opportunity 🙏  
-- OpenAI (via AIMLAPI) for the conversational layer  
-- BirdEye, CoinGecko, Raydium, DEX Screener for amazing APIs  
-- Helius for providing a reliable, production-grade Solana RPC  
-
----
-
-## 🧠 Want to Test?
-
-Start talking to your new DeFi assistant:  
-👉 [t.me/@DefiTalks_bot](https://t.me/@DefiTalks_bot)
-
-Try saying:
- “Swap 1 SOL to USDC”
- “Stake 2 SOL”
- “Show my portfolio”
- “What’s trending?”
-
----
-
-## 🛠️ How to Run DeFiTalk Locally
-git clone https://github.com/shaheer-ali-dev/DefiTalks
-cd DefiTalks
-Set up environment variables(use your own keys)like below :
-BOT_TOKEN=
-AI_API_KEY=
-AI_API_URL=
-RPC_URL=
-BIRD_AUTH_TOKEN=
-MONGODB_URI=
-ENCRYPTION_KEY=
-npm run start(for production) OR npm run dev(for development)
-
-## 💬 Contact
-
-- 🔧 Developer: @DefiTalks_dev  
-- 📬 Telegram Support: DeFiTalk Chat  
-- 🛠 GitHub: (https://github.com/shaheer-ali-dev/DefiTalks)  
-
----
-
-DeFiTalk — Talk. Trade. Thrive.
+**Language:** JavaScript  
+**Runtime:** Node.js  
+**Project Type:** Telegram Bot / AI / Blockchain  
+**Status:** Experimental / Inactive
